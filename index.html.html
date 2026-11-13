@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنظومة الوطنية للاستشعار عن بعد والتصوير الجوي | مصفوفة الأنواع والتطبيقات</title>
+    <!-- تحميل Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تحميل خط Cairo و Tajawal للغة العربية الاحترافية -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- تحميل أيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        space: {
+                            950: '#040812',
+                            900: '#091224',
+                            800: '#11203d',
+                            700: '#1b3159',
+                        },
+                        radar: {
+                            cyan: '#06b6d4',
+                            gold: '#eab308',
+                            sand: '#d4af37',
+                            emerald: '#10b981',
+                            crimson: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #040812;
+            color: #f1f5f9;
+            font-family: 'Cairo', sans-serif;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(212, 175, 55, 0.07) 0%, transparent 40%),
+                linear-gradient(to bottom, rgba(9, 18, 36, 0.95), rgba(4, 8, 18, 0.98));
+            min-height: 100vh;
+        }
+
+        /* شبكة تكتيكية خفيفة في الخلفية */
+        .tactical-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        }
+
+        .glass-card {
+            background: rgba(17, 32, 61, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.25);
+        }
+
+        .military-card {
+            border-right: 4px solid #ef4444;
+        }
+        .military-card:hover {
+            border-color: rgba(239, 68, 68, 0.6);
+            box-shadow: 0 12px 30px -10px rgba(239, 68, 68, 0.2);
+        }
+
+        .civilian-card {
+            border-right: 4px solid #10b981;
+        }
+        .civilian-card:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 12px 30px -10px rgba(16, 185, 129, 0.2);
+        }
+
+        /* تنسيقات الطباعة المخصصة (PDF) */
+        @media print {
+            body {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                font-size: 11pt;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            header {
+                background: #f8fafc !important;
+                color: #0f172a !important;
+                border-bottom: 2px solid #0f172a !important;
+                padding: 15px 0 !important;
+            }
+            .glass-card {
+                background: #ffffff !important;
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                color: #0f172a !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin-bottom: 12px !important;
+            }
+            .text-slate-300, .text-slate-400, .text-cyan-300, .text-amber-300 {
+                color: #334155 !important;
+            }
+            .text-white {
+                color: #0f172a !important;
+            }
+            table {
+                border-collapse: collapse !important;
+                width: 100% !important;
+                font-size: 9pt !important;
+            }
+            th, td {
+                border: 1px solid #94a3b8 !important;
+                color: #0f172a !important;
+                background: #ffffff !important;
+                padding: 6px !important;
+            }
+            th {
+                background: #e2e8f0 !important;
+                font-weight: bold !important;
+            }
+        }
+
+        /* شريط تمرير مخصص */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #040812;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b3159;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="tactical-grid antialiased selection:bg-cyan-500 selection:text-white">
+
+    <!-- إشعار عائم (Toast Notification) -->
+    <div id="toast" class="no-print fixed bottom-6 left-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-space-800 border border-cyan-400/50 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-cyan-400 text-xl"></i>
+        <div>
+            <h4 id="toast-title" class="font-bold text-sm">تمت العملية بنجاح</h4>
+            <p id="toast-msg" class="text-xs text-slate-300">جاري تجهيز الملف...</p>
+        </div>
+    </div>
+
+    <!-- رأس الصفحة (Header) -->
+    <header class="relative border-b border-cyan-500/20 bg-space-900/90 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                
+                <!-- العنوان والشعار -->
+                <div class="flex items-start sm:items-center gap-4">
+                    <div class="no-print w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-amber-500/20 border border-cyan-400/30 flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/10">
+                        <i class="fa-solid fa-satellite text-2xl text-cyan-400"></i>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <span class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                                المرجع التقني الشامل
+                            </span>
+                            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                                ISR & Earth Observation
+                            </span>
+                        </div>
+                        <h1 class="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight">
+                            المنظومة الوطنية للاستشعار عن بعد والتصوير الجوي
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                            مصفوفة الأنواع والمستشعرات والتطبيقات العسكرية والاستخباراتية والمدنية والتنموية
+                        </p>
+                    </div>
+                </div>
+
+                <!-- أزرار التصدير والتحميل -->
+                <div class="no-print flex flex-wrap items-center gap-2.5 shrink-0">
+                    <button onclick="exportPDF()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-red-900/30 transition cursor-pointer">
+                        <i class="fa-solid fa-file-pdf text-base"></i>
+                        <span>تحميل PDF / طباعة</span>
+                    </button>
+
+                    <button onclick="exportWord()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-blue-900/30 transition cursor-pointer">
+                        <i class="fa-solid fa-file-word text-base"></i>
+                        <span>تصدير Word (.doc)</span>
+                    </button>
+
+                    <button onclick="exportHTML()" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-space-800 hover:bg-space-700 text-amber-300 border border-amber-400/40 font-bold text-xs sm:text-sm shadow-lg transition cursor-pointer">
+                        <i class="fa-solid fa-download text-base"></i>
+                        <span>حفظ كملف HTML</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- شريط الإحصائيات السريعة -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-semibold">إجمالي المنظومات</p>
+                    <p class="text-2xl font-black text-white">12 <span class="text-xs font-normal text-cyan-400">منظومة متكاملة</span></p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-red-500/15 text-red-400 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-semibold">الاستطلاع العسكري</p>
+                    <p class="text-2xl font-black text-white">6 <span class="text-xs font-normal text-red-400">أنظمة تكتيكية</span></p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-earth-africa"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-semibold">التطبيقات المدنية</p>
+                    <p class="text-2xl font-black text-white">6 <span class="text-xs font-normal text-emerald-400">أنظمة تنموية</span></p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-4 flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-wave-square"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-slate-400 font-semibold">النطاقات الطيفية</p>
+                    <p class="text-lg font-black text-white">EO / IR / SAR / RF</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- أدوات البحث والتصفية التفاعلية -->
+        <section class="no-print glass-card rounded-2xl p-4 sm:p-5 space-y-4">
+            <div class="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center">
+                
+                <!-- أزرار التصفية حسب القطاع -->
+                <div class="flex flex-wrap gap-2" id="domain-filters">
+                    <button onclick="setDomainFilter('all')" data-filter="all" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 text-space-950 transition cursor-pointer">
+                        <i class="fa-solid fa-border-all ml-1"></i> الكل (12)
+                    </button>
+                    <button onclick="setDomainFilter('military')" data-filter="military" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-space-800 text-slate-300 hover:bg-space-700 border border-red-500/30 transition cursor-pointer">
+                        <i class="fa-solid fa-crosshairs text-red-400 ml-1"></i> العسكري والاستخباراتي (6)
+                    </button>
+                    <button onclick="setDomainFilter('civilian')" data-filter="civilian" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-space-800 text-slate-300 hover:bg-space-700 border border-emerald-500/30 transition cursor-pointer">
+                        <i class="fa-solid fa-seedling text-emerald-400 ml-1"></i> المدني والتنموي (6)
+                    </button>
+                </div>
+
+                <!-- التصفية حسب آلية العمل (سلبي / إيجابي) -->
+                <div class="flex items-center gap-2 bg-space-950/60 p-1.5 rounded-xl border border-slate-700/60">
+                    <span class="text-xs text-slate-400 px-2 font-semibold">آلية العمل:</span>
+                    <button onclick="setMechanismFilter('all')" data-mech="all" class="mech-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-space-950 transition cursor-pointer">
+                        الجميع
+                    </button>
+                    <button onclick="setMechanismFilter('passive')" data-mech="passive" class="mech-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition cursor-pointer">
+                        سلبي (Passive)
+                    </button>
+                    <button onclick="setMechanismFilter('active')" data-mech="active" class="mech-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition cursor-pointer">
+                        إيجابي (Active)
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- شريط البحث الفوري -->
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="searchInput" oninput="renderCards()" placeholder="ابحث باسم المستشعر، النطاق الطيفي (مثل SAR, LiDAR, NDVI, FLIR)، أو التطبيق..." class="w-full bg-space-950/80 border border-slate-700 focus:border-cyan-400 rounded-xl py-3 pr-11 pl-4 text-sm text-white placeholder-slate-400 focus:outline-none transition">
+            </div>
+        </section>
+
+        <!-- شبكة البطاقات التفاعلية -->
+        <section>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                    <span class="w-2.5 h-6 bg-cyan-400 rounded-full inline-block"></span>
+                    <span id="section-heading">بطاقات منظومات الاستشعار عن بعد والتصوير الجوي</span>
+                </h2>
+                <span id="results-count" class="text-xs font-bold text-cyan-300 bg-cyan-500/10 px-3 py-1 rounded-full border border-cyan-500/20">
+                    عرض 12 منظومة
+                </span>
+            </div>
+
+            <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- يتم توليد البطاقات ديناميكياً عبر JavaScript -->
+            </div>
+
+            <!-- رسالة عدم وجود نتائج -->
+            <div id="empty-state" class="hidden glass-card rounded-2xl p-10 text-center">
+                <i class="fa-solid fa-satellite-dish text-4xl text-slate-500 mb-3"></i>
+                <h3 class="text-lg font-bold text-white">لا توجد منظومات مطابقة لبحثك</h3>
+                <p class="text-sm text-slate-400 mt-1">جرّب تغيير كلمات البحث أو إعادة ضبط فلاتر التصفية.</p>
+                <button onclick="resetFilters()" class="mt-4 px-5 py-2 rounded-xl bg-cyan-500 text-space-950 font-bold text-sm hover:bg-cyan-400 transition cursor-pointer">
+                    إعادة ضبط الفلاتر
+                </button>
+            </div>
+        </section>
+
+        <!-- جدول المقارنة المرجعي الشامل -->
+        <section class="glass-card rounded-2xl p-5 sm:p-6 overflow-hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                <div>
+                    <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-table-columns text-amber-400"></i>
+                        <span>مصفوفة المقارنة التقنية المرجعية (Comparison Matrix)</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">مقارنة هندسية شاملة بين النطاقات الطيفية، آليات التشغيل، الدقة، والمنصات العاملة</p>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-700/70">
+                <table id="comparison-table" class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="bg-space-950 text-cyan-300 text-xs sm:text-sm border-b border-slate-700">
+                            <th class="p-3.5 font-bold whitespace-nowrap">المنظومة / المستشعر</th>
+                            <th class="p-3.5 font-bold whitespace-nowrap">القطاع</th>
+                            <th class="p-3.5 font-bold whitespace-nowrap">النطاق الطيفي</th>
+                            <th class="p-3.5 font-bold whitespace-nowrap">آلية العمل</th>
+                            <th class="p-3.5 font-bold whitespace-nowrap">الدقة المكانية</th>
+                            <th class="p-3.5 font-bold whitespace-nowrap">أبرز المنصات / الأقمار</th>
+                            <th class="p-3.5 font-bold">التطبيقات الرئيسية</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-slate-800 text-xs sm:text-sm text-slate-200">
+                        <!-- يتم توليد صفوف الجدول ديناميكياً -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="border-t border-slate-800/80 bg-space-950/90 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <p>المنظومة الوطنية للاستشعار عن بعد والتصوير الجوي — دليل مرجعي تفاعلي للخبراء والمتدربين</p>
+            <p class="text-cyan-400/80 font-semibold">جاهز للعرض التفاعلي والطباعة والتصدير بصيغ PDF / Word / HTML</p>
+        </div>
+    </footer>
+
+    <!-- نافذة التفاصيل الموسعة (Modal) -->
+    <div id="detail-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-space-900 border border-cyan-400/40 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl p-6 relative animate-fadeIn">
+            
+            <!-- زر الإغلاق -->
+            <button onclick="closeModal()" class="absolute top-5 left-5 w-9 h-9 rounded-xl bg-space-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 flex items-center justify-center transition cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div id="modal-content">
+                <!-- محتوى النافذة يُملأ برمجياً -->
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // قاعدة البيانات العلمية والتقنية الشاملة (12 منظومة: 6 عسكرية + 6 مدنية)
+        const sensorsData = [
+            // ================= أولاً: الأنواع العسكرية والاستخباراتية =================
+            {
+                id: "mil-eo",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستطلاع البصري عالي الدقة",
+                enTitle: "Electro-Optical Reconnaissance (EO)",
+                icon: "fa-eye",
+                spectrum: "الضوء المرئي والأشعة تحت الحمراء القريبة (0.4 - 0.9 µm)",
+                resolution: "دون المتر (0.15م - 0.50م فضائياً / < 5 سم جوياً)",
+                platforms: "أقمار KH-11، WorldView Legion، طائرات U-2 و RQ-4 Global Hawk",
+                summary: "التقاط صور فوتوغرافية ورقمية فائقة الوضوح للمنشآت الحيوية والتحركات العسكرية وتقييم أضرار المعارك (BDA).",
+                applications: [
+                    "رصد القواعد العسكرية والمطارات والموانئ والتحصينات الهندسية.",
+                    "تحديد أنواع المركبات والطائرات والقطع البحرية بدقة عالية.",
+                    "تقييم نتائج الضربات الجوية (Battle Damage Assessment)."
+                ],
+                advantages: [
+                    "أعلى دقة مكانية وتفصيل بصري سهل التفسير من قِبل المحللين.",
+                    "توفر ألوان طبيعية تساعد في تمييز العلامات الميدانية."
+                ],
+                limitations: [
+                    "يتوقف كلياً في الظلام الدامس أو عند وجود غطاء سحابي كثيف أو دخان.",
+                    "يتأثر بالتمويه البصري التقليدي وشباك الإخفاء."
+                ],
+                realWorldExample: "رصد التحصينات الميدانية وتحركات الأرتال المدرعة وتحديث الخرائط التكتيكية قبل العمليات."
+            },
+            {
+                id: "mil-thermal",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستشعار بالأشعة تحت الحمراء الحرارية",
+                enTitle: "Thermal Infrared / FLIR Systems",
+                icon: "fa-fire-flame-curved",
+                spectrum: "الأشعة تحت الحمراء المتوسطة والبعيدة (3 - 5 µm & 8 - 14 µm)",
+                resolution: "0.5م - 3م (محمول جواً) / 30م - 60م (فضائياً)",
+                platforms: "بودات الاستطلاع (SNIPER / LITENING)، مسيرات MQ-9 Reaper",
+                summary: "قياس الانبعاث الحراري الذاتي للأجسام لكشف النشاط البشري والمعدات ليلاً وكشف الأهداف المموهة بصرياً.",
+                applications: [
+                    "كشف محركات الدبابات والطائرات التي عملت حديثاً (البصمة الحرارية المتبقية).",
+                    "رصد الأفراد والأنفاق ومخازن الذخيرة تحت الأرض عبر الفروق الحرارية للتربة.",
+                    "تنفيذ عمليات الملاحة والاستهداف الليلي الدقيق في مختلف الظروف."
+                ],
+                advantages: [
+                    "يعمل بكفاءة تامة في الظلام الدامس (24/7) دون الحاجة لأي إضاءة.",
+                    "يكشف الأهداف المخفية داخل الغابات أو خلف السواتر الدخانية الخفيفة."
+                ],
+                limitations: [
+                    "تتأثر جودة الصورة بالتوازن الحراري (Thermal Crossover) عند الفجر والغروب.",
+                    "لا يخترق السحب الممطرة الكثيفة أو الزجاج العازل."
+                ],
+                realWorldExample: "تتبع تسلل العناصر ليلاً على الحدود وكشف منصات إطلاق الصواريخ المموهة عبر حرارة عوادمها."
+            },
+            {
+                id: "mil-sar",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "active",
+                mechanismLabel: "إيجابي (Active)",
+                title: "رادار الفتحة التركيبية العسكري",
+                enTitle: "Synthetic Aperture Radar (SAR / GMTI)",
+                icon: "fa-satellite-dish",
+                spectrum: "الموجات الميكروية (نطاقات X, C, L, P-Band)",
+                resolution: "0.25م - 1م (نمط Spotlight)",
+                platforms: "أقمار Capella Space، ICEYE، SAR-Lupe، رادارات JSTARS",
+                summary: "بث نبضات رادارية واستقبال انعكاساتها لتكوين صور عالية الدقة تخترق السحب والظلام وتكشف الأهداف المتحركة.",
+                applications: [
+                    "المراقبة المستمرة في جميع الأحوال الجوية (عواصف، غيوم، غبار) ليلاً ونهاراً.",
+                    "كشف وتتبع الأهداف الأرضية المتحركة (GMTI) وتحديد سرعتها واتجاهها.",
+                    "كشف التغيرات السطحية الدقيقة (Coherent Change Detection) مثل آثار عجلات الآليات."
+                ],
+                advantages: [
+                    "استقلالية تامة عن الطقس والإضاءة الشمسية.",
+                    "القدرة على اختراق أوراق الشجر والتربة الجافة الرملية (في نطاقات L و P)."
+                ],
+                limitations: [
+                    "تتطلب الصور معالجة متقدمة وتدريباً متخصصاً لتفسير الظلال والانعكاسات الرادارية.",
+                    "تتعرض للتشويش الإلكتروني (Jamming) في بيئات الحرب الإلكترونية."
+                ],
+                realWorldExample: "مراقبة تحركات السفن الحربية في البحار المغطاة بالغيوم وكشف المسارات الحديثة في الصحراء."
+            },
+            {
+                id: "mil-sigint",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستطلاع الإلكتروني والإشاري",
+                enTitle: "SIGINT / ELINT / COMINT",
+                icon: "fa-tower-broadcast",
+                spectrum: "الطيف الترددي الراديوي والميكروي (HF, VHF, UHF, SHF)",
+                resolution: "تحديد موقع جغرافي (Geolocation) بدقة عشرات الأمتار",
+                platforms: "طائرات RC-135 Rivet Joint، أقمار Mentor/Orion، مسيرات استطلاع إلكتروني",
+                summary: "اعتراض وتحليل الإشارات الكهرومغناطيسية المنبعثة من الرادارات وأنظمة الدفاع الجوي والاتصالات اللاسلكية.",
+                applications: [
+                    "رسم خريطة الانتشار الإلكتروني (EOB) وتحديد مواقع بطاريات الدفاع الجوي والرادارات (ELINT).",
+                    "اعتراض وتحليل الاتصالات اللاسلكية المشفرة وغير المشفرة (COMINT).",
+                    "تحديد البصمة الترددية للرادارات المعادية لبرمجة أنظمة التشويش والحماية الذاتية."
+                ],
+                advantages: [
+                    "يعمل بصمت سلبي تام دون كشف منصة الاستطلاع.",
+                    "يوفر إنذاراً مبكراً جداً قبل بدء التحركات الميدانية الفعلية."
+                ],
+                limitations: [
+                    "يتوقف عن الرصد في حال التزام العدو بالصمت اللاسلكي والراداري (EMCON).",
+                    "يواجه تحديات التشفير المعقد والقفز الترددي السريع."
+                ],
+                realWorldExample: "تحديد مواقع رادارات الإنذار المبكر وتوجيه الصواريخ المضادة للإشعاع (ARM) لتدميرها."
+            },
+            {
+                id: "mil-hyper",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستشعار فائق الطيف العسكري",
+                enTitle: "Military Hyperspectral Imaging (HSI)",
+                icon: "fa-barcode",
+                spectrum: "مئات القنوات الطيفية الضيقة المتصلة (0.4 - 2.5 µm)",
+                resolution: "1م - 5م (فضائياً وجوياً)",
+                platforms: "أقمار PRISMA، EnMAP، مستشعرات HyMap المحمولة جواً",
+                summary: "تحليل البصمة الطيفية الكيميائية والفيزيائية لكل بكسل لكشف الخداع والتمويه والمواد الخطرة.",
+                applications: [
+                    "التمييز القاطع بين الأهداف العسكرية الحقيقية والأهداف الهيكلية الخداعية (Decoys).",
+                    "كشف شباك التمويه الاصطناعية وسط الغطاء النباتي الطبيعي لاختلاف انعكاس الكلوروفيل.",
+                    "رصد تسربات المواد الكيميائية والوقود والألغام المدفونة حديثاً عبر تغير خصائص التربة."
+                ],
+                advantages: [
+                    "يكشف التركيب المادي للأجسام وليس شكلها الهندسي فقط.",
+                    "يفشل معه التمويه البصري التقليدي بالكامل."
+                ],
+                limitations: [
+                    "حجم بيانات هائل يتطلب قدرات معالجة فائقة.",
+                    "يعتمد على ضوء الشمس المنعكس لذا يقتصر عمله على ساعات النهار الصافية."
+                ],
+                realWorldExample: "كشف دبابات مموهة بشباك خضراء داخل غابة كثيفة وتحديد الألغام المضادة للدروع المزروعة في الطرق."
+            },
+            {
+                id: "mil-lidar",
+                domain: "military",
+                domainLabel: "عسكري واستخباراتي",
+                mechanism: "active",
+                mechanismLabel: "إيجابي (Active)",
+                title: "الليدار العسكري والمسح الأعماقي",
+                enTitle: "Military & Bathymetric LiDAR",
+                icon: "fa-cubes",
+                spectrum: "نبضات ليزرية (1064 nm للتضاريس و 532 nm الأخضر للمياه)",
+                resolution: "دقة رأسية < 10 سم / سحابة نقطية عالية الكثافة",
+                platforms: "مروحيات وطائرات مسيرة تكتيكية، أنظمة ALMDS البحرية",
+                summary: "إرسال ملايين النبضات الليزرية في الثانية لبناء مجسمات ثلاثية الأبعاد فائقة الدقة للتضاريس والمياه الضحلة.",
+                applications: [
+                    "اختراق فجوات الغطاء النباتي الكثيف لكشف المنشآت والخنادق المخفية تحت الأشجار.",
+                    "مسح المناطق الساحلية الضحلة (Bathymetry) لكشف الألغام البحرية والغواصات القزمية قبل الإنزال.",
+                    "تخطيط مسارات الطيران المنخفض (Terrain Following) وتوجيه الصواريخ الجوالة."
+                ],
+                advantages: [
+                    "دقة هندسية ثلاثية الأبعاد لا تضاهى للتضاريس والمنشآت.",
+                    "القدرة الفريدة على اختراق الغابات والمياه الصافية."
+                ],
+                limitations: [
+                    "مدى تشغيل محدود نسبياً مقارنة بالرادار والأقمار الصناعية.",
+                    "يتأثر بالضباب الكثيف والأمطار وعكورة المياه العالية."
+                ],
+                realWorldExample: "تأمين شواطئ الإنزال البرمائي برسم خريطة قاع البحر وكشف العوائق والألغام المغمورة."
+            },
+
+            // ================= ثانياً: الأنواع المدنية والتنموية =================
+            {
+                id: "civ-multi",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستشعار متعدد الأطياف",
+                enTitle: "Multispectral Remote Sensing",
+                icon: "fa-seedling",
+                spectrum: "4 إلى 15 نطاقاً طيفياً (المرئي، NIR، SWIR)",
+                resolution: "10م - 30م (مجاني) / 0.3م - 3م (تجاري)",
+                platforms: "أقمار Sentinel-2، Landsat 8/9، PlanetScope، EgyptSat-A",
+                summary: "العمود الفقري لمراقبة موارد الأرض والزراعة والبيئة من خلال قياس انعكاس الأشعة الشمسية في نطاقات محددة.",
+                applications: [
+                    "مراقبة صحة المحاصيل الزراعية وتقدير الإنتاجية وحساب مؤشر الغطاء النباتي (NDVI).",
+                    "رصد التصحر، زحف الكثبان الرملية، وتآكل الشواطئ.",
+                    "مراقبة جودة المياه، الطحالب، وحصر المساحات المزروعة والتعديات على الأراضي الزراعية."
+                ],
+                advantages: [
+                    "توفر بيانات أرشيفية مجانية ضخمة تمتد لأكثر من 50 عاماً (برنامج Landsat).",
+                    "تغطية دورية منتظمة (كل 5 أيام في Sentinel-2)."
+                ],
+                limitations: [
+                    "تتأثر الصور بالغطاء السحابي وتتطلب تصحيحاً جوياً.",
+                    "لا تكفي للتمييز الكيميائي الدقيق مقارنة بالمستشعرات فائقة الطيف."
+                ],
+                realWorldExample: "إدارة الموارد المائية وحساب المقننات المائية للمحاصيل الاستراتيجية ومراقبة المشروعات الزراعية القومية."
+            },
+            {
+                id: "civ-thermal",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستشعار الحراري المدني والبيئي",
+                enTitle: "Civilian Thermal Infrared",
+                icon: "fa-temperature-high",
+                spectrum: "الأشعة تحت الحمراء الحرارية (8 - 14 µm)",
+                resolution: "30م - 100م (فضائياً) / سنتيمترات (بالدرون)",
+                platforms: "مستشعرات TIRS على Landsat، طائرات الدرون الحرارية",
+                summary: "قياس درجة حرارة سطح الأرض والمنشآت لرصد التغيرات المناخية وكفاءة الطاقة والكوارث البيئية.",
+                applications: [
+                    "رصد حرائق الغابات والمناطق الصناعية وتحديد بؤر الاشتعال المبكرة.",
+                    "فحص محطات الطاقة الشمسية الكهروضوئية واكتشاف الخلايا التالفة (Hot-spots).",
+                    "دراسة ظاهرة الجزر الحرارية الحضرية (Urban Heat Islands) والتسربات الحرارية في المباني والأنابيب."
+                ],
+                advantages: [
+                    "يوفر قياسات كمية دقيقة لدرجات الحرارة عن بُعد دون تلامس.",
+                    "يكشف الأعطال الكهربائية والميكانيكية قبل حدوث الانهيار."
+                ],
+                limitations: [
+                    "الدقة المكانية للأقمار الحرارية أقل من النطاقات المرئية.",
+                    "تتطلب معايرة دقيقة لمعامل الانبعاثية (Emissivity) للأسطح المختلفة."
+                ],
+                realWorldExample: "الفحص الدوري لمحطات الطاقة الشمسية الكبرى مثل مجمع بنبان لاكتشاف الأعطال ورفع الكفاءة."
+            },
+            {
+                id: "civ-photo",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "التصوير الجوي المساحي الرقمي",
+                enTitle: "Digital Aerial Photogrammetry",
+                icon: "fa-camera-retro",
+                spectrum: "RGB + NIR (كاميرات مساحية معايرة فائقة الدقة)",
+                resolution: "2 سم - 15 سم (GSD)",
+                platforms: "طائرات مسح جوي مأهولة بمستشعرات Leica ADS / UltraCam وطائرات UAV",
+                summary: "إنتاج الخرائط الطبوغرافية والصور الجوية المصححة هندسياً (Orthophotos) والنماذج الرقمية للمدن.",
+                applications: [
+                    "إنتاج الخرائط الطبوغرافية التفصيلية بمقاييس رسم كبيرة (1:500 إلى 1:5000).",
+                    "بناء نماذج الارتفاعات الرقمية (DEM) ونماذج السطح (DSM) للتخطيط العمراني.",
+                    "تحديث قواعد بيانات السجل العيني العقاري وشبكات الطرق والمرافق."
+                ],
+                advantages: [
+                    "دقة هندسية ومكانية فائقة تفوق الأقمار الصناعية التجارية.",
+                    "مرونة عالية في جدولة مهام التصوير الجوي فوق المدن والمشروعات."
+                ],
+                limitations: [
+                    "تكلفة تشغيلية أعلى للمساحات القارية الشاسعة مقارنة بالأقمار الصناعية.",
+                    "يتطلب تصاريح طيران وظروفاً جوية صافية."
+                ],
+                realWorldExample: "رسم الخرائط المساحية التفصيلية للمدن الجديدة والمحاور المرورية ومشروعات البنية التحتية الكبرى."
+            },
+            {
+                id: "civ-lidar",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "active",
+                mechanismLabel: "إيجابي (Active)",
+                title: "المسح بالليدار المدني والهندسي",
+                enTitle: "Airborne & Terrestrial LiDAR",
+                icon: "fa-city",
+                spectrum: "أشعة ليزر قريبة من تحت الحمراء (905 nm - 1550 nm)",
+                resolution: "1 سم - 5 سم (كثافة تصل لمئات النقاط في المتر المربع)",
+                platforms: "ماسحات ليزر محمولة جواً، أنظمة المسح المتحرك (Mobile Mapping)",
+                summary: "بناء التوائم الرقمية ثلاثية الأبعاد (Digital Twins) للمدن والبنية التحتية ودراسة مخاطر السيول.",
+                applications: [
+                    "نمذجة المدن الذكية ثلاثية الأبعاد (3D City Modeling) وحساب الحجوم الهندسية.",
+                    "فحص خطوط نقل الكهرباء عالية الجهد وتحديد الأشجار القريبة منها.",
+                    "نمذجة مسارات السيول والفيضانات بدقة سنتيمترية لتصميم مخرات السيول."
+                ],
+                advantages: [
+                    "سرعة فائقة في جمع ملايين القياسات ثلاثية الأبعاد بدقة هندسية.",
+                    "القدرة على فصل الأرض الطبيعية (Bare Earth) عن المباني والأشجار آلياً."
+                ],
+                limitations: [
+                    "معدات عالية التكلفة وتتطلب برمجيات متخصصة لمعالجة السحب النقطية (Point Clouds).",
+                    "لا يلتقط المعلومات الطيفية للألوان إلا بدمجه مع كاميرا رقمية."
+                ],
+                realWorldExample: "توثيق الآثار والمواقع التراثية رقمياً وتخطيط مسارات القطارات السريعة والكباري."
+            },
+            {
+                id: "civ-insar",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "active",
+                mechanismLabel: "إيجابي (Active)",
+                title: "الرادار التداخلي لقياس الإزاحة",
+                enTitle: "Interferometric SAR (InSAR)",
+                icon: "fa-wave-square",
+                spectrum: "الموجات الميكروية (طور الموجة الرادارية Phase)",
+                resolution: "دقة قياس الإزاحة الرأسية تصل إلى 1 - 3 مليمتر!",
+                platforms: "أقمار Sentinel-1، TerraSAR-X، COSMO-SkyMed، ALOS-2",
+                summary: "مقارنة صورتين راداريتين أو أكثر لنفس المنطقة زمنياً لقياس أدق التشوهات والحركات في القشرة الأرضية والمنشآت.",
+                applications: [
+                    "مراقبة سلامة السدود الكبرى، الجسور، والأنفاق واكتشاف أي هبوط أرضي مبكر.",
+                    "قياس هبوط التربة الناتج عن السحب الجائر للمياه الجوفية أو التعدين.",
+                    "رصد حركة الصدوع الأرضية والنشاط البركاني والانهيارات الأرضية قبل وقوعها."
+                ],
+                advantages: [
+                    "دقة قياس مليمترية من الفضاء دون الحاجة لتركيب أجهزة استشعار على الأرض.",
+                    "يغطي مساحات شاسعة بتكلفة منخفضة جداً مقارنة بالمساحة الأرضية التقليدية."
+                ],
+                limitations: [
+                    "يتأثر بالتغيرات السريعة في الغطاء النباتي أو الثلوج (فقدان الترابط Coherence).",
+                    "يقيس الإزاحة في خط نظر القمر الصناعي (Line of Sight) فقط."
+                ],
+                realWorldExample: "المراقبة المستمرة لاستقرار السدود والخزانات المائية وهبوط التربة في الدلتا والمدن الساحلية."
+            },
+            {
+                id: "civ-meteo",
+                domain: "civilian",
+                domainLabel: "مدني وتنموي",
+                mechanism: "passive",
+                mechanismLabel: "سلبي (Passive)",
+                title: "الاستشعار الجوي والأرصادي",
+                enTitle: "Meteorological & Climate Remote Sensing",
+                icon: "fa-cloud-sun-rain",
+                spectrum: "متعدد النطاقات (المرئي، بخار الماء، والأشعة تحت الحمراء الحرارية)",
+                resolution: "500م - 2 كم (دقة زمنية فائقة كل 10 - 15 دقيقة)",
+                platforms: "أقمار Meteosat (MSG/MTG)، GOES-R، NOAA، Himawari",
+                summary: "المراقبة اللحظية للغلاف الجوي والمحيطات والتنبؤ بالطقس والظواهر الجوية المتطرفة من المدار الجغرافي الثابت.",
+                applications: [
+                    "تتبع حركة السحب والأعاصير والعواصف الترابية والرملية لحظة بلحظة.",
+                    "قياس درجات حرارة سطح البحر (SST) ورصد ظواهر النينيو والتيارات البحرية.",
+                    "توفير بيانات الإشعاع الشمسي وتوجيه الملاحة الجوية والبحرية."
+                ],
+                advantages: [
+                    "دقة زمنية فائقة (صورة كل 10 دقائق) تتيح الرصد الفوري للتغيرات الجوية.",
+                    "تغطية نصف الكرة الأرضية بالكامل في لقطة واحدة."
+                ],
+                limitations: [
+                    "دقة مكانية منخفضة لا تصلح لرسم الخرائط الهندسية أو رصد المنشآت الصغيرة.",
+                    "ترتفع تكلفة إطلاق الأقمار في المدار الثابت (36,000 كم)."
+                ],
+                realWorldExample: "الإنذار المبكر بالعواصف الرملية والسيول وتأمين مسارات الطيران المدني والملاحة في قناة السويس."
+            }
+        ];
+
+        // حالة الفلاتر الحالية
+        let currentDomain = 'all';
+        let currentMechanism = 'all';
+
+        // دالة إظهار الإشعارات
+        function showToast(title, msg, iconClass = 'fa-circle-check text-cyan-400') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').className = `fa-solid ${iconClass} text-xl`;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // تحديث فلتر القطاع
+        function setDomainFilter(domain) {
+            currentDomain = domain;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === domain) {
+                    btn.className = 'filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 text-space-950 transition cursor-pointer shadow-lg shadow-cyan-500/20';
+                } else {
+                    btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-space-800 text-slate-300 hover:bg-space-700 border border-slate-700 transition cursor-pointer';
+                }
+            });
+            renderCards();
+        }
+
+        // تحديث فلتر آلية العمل
+        function setMechanismFilter(mech) {
+            currentMechanism = mech;
+            document.querySelectorAll('.mech-btn').forEach(btn => {
+                if (btn.dataset.mech === mech) {
+                    btn.className = 'mech-btn active px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-space-950 transition cursor-pointer';
+                } else {
+                    btn.className = 'mech-btn px-3 py-1.5 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition cursor-pointer';
+                }
+            });
+            renderCards();
+        }
+
+        // إعادة ضبط الفلاتر
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            setDomainFilter('all');
+            setMechanismFilter('all');
+        }
+
+        // رسم البطاقات والجدول
+        function renderCards() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const grid = document.getElementById('cards-grid');
+            const emptyState = document.getElementById('empty-state');
+            const resultsCount = document.getElementById('results-count');
+
+            const filtered = sensorsData.filter(item => {
+                const matchDomain = currentDomain === 'all' || item.domain === currentDomain;
+                const matchMech = currentMechanism === 'all' || item.mechanism === currentMechanism;
+                const matchQuery = !query || 
+                    item.title.toLowerCase().includes(query) ||
+                    item.enTitle.toLowerCase().includes(query) ||
+                    item.spectrum.toLowerCase().includes(query) ||
+                    item.summary.toLowerCase().includes(query) ||
+                    item.platforms.toLowerCase().includes(query) ||
+                    item.applications.some(app => app.toLowerCase().includes(query));
+                
+                return matchDomain && matchMech && matchQuery;
+            });
+
+            resultsCount.textContent = `عرض ${filtered.length} منظومة`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(sensor => {
+                const isMil = sensor.domain === 'military';
+                const cardClass = isMil ? 'military-card' : 'civilian-card';
+                const badgeClass = isMil 
+                    ? 'bg-red-500/15 text-red-300 border-red-500/30' 
+                    : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+                const iconBgClass = isMil 
+                    ? 'bg-red-500/15 text-red-400 border-red-500/25' 
+                    : 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25';
+                const mechBadgeClass = sensor.mechanism === 'active'
+                    ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                    : 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30';
+
+                return `
+                <article onclick="openModal('${sensor.id}')" class="glass-card ${cardClass} rounded-2xl p-5 flex flex-col justify-between cursor-pointer group">
+                    <div>
+                        <!-- الشارات العلوية -->
+                        <div class="flex items-center justify-between gap-2 mb-3.5">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-bold border ${badgeClass}">
+                                ${sensor.domainLabel}
+                            </span>
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold border ${mechBadgeClass}">
+                                ${sensor.mechanismLabel}
+                            </span>
+                        </div>
+
+                        <!-- العنوان والأيقونة -->
+                        <div class="flex items-start gap-3.5 mb-3">
+                            <div class="w-11 h-11 rounded-xl border ${iconBgClass} flex items-center justify-center text-lg shrink-0 mt-0.5">
+                                <i class="fa-solid ${sensor.icon}"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-extrabold text-white group-hover:text-cyan-300 transition leading-snug">
+                                    ${sensor.title}
+                                </h3>
+                                <p class="text-xs font-mono text-slate-400 mt-0.5" dir="ltr">${sensor.enTitle}</p>
+                            </div>
+                        </div>
+
+                        <!-- الوصف الموجز -->
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
+                            ${sensor.summary}
+                        </p>
+
+                        <!-- المواصفات التقنية المختصرة -->
+                        <div class="space-y-2 bg-space-950/60 rounded-xl p-3 border border-slate-800/80 text-xs">
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-wave-square text-cyan-400 mt-0.5 shrink-0"></i>
+                                <div>
+                                    <span class="text-slate-400 font-semibold">النطاق الطيفي: </span>
+                                    <span class="text-slate-200">${sensor.spectrum}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-ruler-combined text-amber-400 mt-0.5 shrink-0"></i>
+                                <div>
+                                    <span class="text-slate-400 font-semibold">الدقة المكانية: </span>
+                                    <span class="text-slate-200">${sensor.resolution}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تذييل البطاقة -->
+                    <div class="no-print mt-4 pt-3 border-t border-slate-700/50 flex items-center justify-between text-xs font-bold text-cyan-400 group-hover:text-cyan-300">
+                        <span>عرض التفاصيل الفنية والمزايا والقيود</span>
+                        <i class="fa-solid fa-arrow-left transform group-hover:-translate-x-1 transition"></i>
+                    </div>
+                </article>
+                `;
+            }).join('');
+        }
+
+        // تعبئة جدول المقارنة المرجعي الشامل
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = sensorsData.map(sensor => {
+                const isMil = sensor.domain === 'military';
+                const domainBadge = isMil 
+                    ? '<span class="px-2 py-0.5 rounded bg-red-500/15 text-red-300 border border-red-500/30 text-xs font-bold">عسكري</span>'
+                    : '<span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-bold">مدني</span>';
+
+                return `
+                <tr class="hover:bg-space-800/50 transition">
+                    <td class="p-3.5 font-bold text-white">
+                        <div>${sensor.title}</div>
+                        <div class="text-xs font-mono text-slate-400 font-normal" dir="ltr">${sensor.enTitle}</div>
+                    </td>
+                    <td class="p-3.5 whitespace-nowrap">${domainBadge}</td>
+                    <td class="p-3.5 text-slate-300">${sensor.spectrum}</td>
+                    <td class="p-3.5 whitespace-nowrap font-semibold text-amber-300">${sensor.mechanismLabel}</td>
+                    <td class="p-3.5 text-slate-200">${sensor.resolution}</td>
+                    <td class="p-3.5 text-cyan-300">${sensor.platforms}</td>
+                    <td class="p-3.5 text-slate-300">${sensor.applications[0]}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        // فتح النافذة المنبثقة للتفاصيل الموسعة
+        function openModal(id) {
+            const sensor = sensorsData.find(s => s.id === id);
+            if (!sensor) return;
+
+            const isMil = sensor.domain === 'military';
+            const headerColor = isMil ? 'text-red-400' : 'text-emerald-400';
+            const badgeStyle = isMil 
+                ? 'bg-red-500/15 text-red-300 border-red-500/30' 
+                : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="space-y-5">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
+                            <span class="px-3 py-1 rounded-lg text-xs font-bold border ${badgeStyle}">${sensor.domainLabel}</span>
+                            <span class="px-3 py-1 rounded-lg text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">${sensor.mechanismLabel}</span>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2.5">
+                            <i class="fa-solid ${sensor.icon} ${headerColor}"></i>
+                            <span>${sensor.title}</span>
+                        </h3>
+                        <p class="text-xs font-mono text-cyan-400 mt-1" dir="ltr">${sensor.enTitle}</p>
+                    </div>
+
+                    <p class="text-sm text-slate-200 leading-relaxed bg-space-950/70 p-4 rounded-xl border border-slate-800">
+                        ${sensor.summary}
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-space-800/60 p-3.5 rounded-xl border border-slate-700/60">
+                            <span class="text-slate-400 block mb-1 font-semibold">النطاق الطيفي:</span>
+                            <span class="text-white font-bold">${sensor.spectrum}</span>
+                        </div>
+                        <div class="bg-space-800/60 p-3.5 rounded-xl border border-slate-700/60">
+                            <span class="text-slate-400 block mb-1 font-semibold">الدقة المكانية القياسية:</span>
+                            <span class="text-white font-bold">${sensor.resolution}</span>
+                        </div>
+                        <div class="sm:col-span-2 bg-space-800/60 p-3.5 rounded-xl border border-slate-700/60">
+                            <span class="text-slate-400 block mb-1 font-semibold">أبرز المنصات والأقمار الصناعية:</span>
+                            <span class="text-cyan-300 font-bold">${sensor.platforms}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-extrabold text-cyan-300 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye"></i> التطبيقات والمهام العملياتية:
+                        </h4>
+                        <ul class="space-y-1.5 text-xs sm:text-sm text-slate-200 list-disc list-inside bg-space-950/50 p-3.5 rounded-xl border border-slate-800">
+                            ${sensor.applications.map(app => `<li>${app}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-3.5">
+                            <h4 class="text-xs font-extrabold text-emerald-400 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-circle-check"></i> المزايا الفنية:
+                            </h4>
+                            <ul class="space-y-1.5 text-xs text-slate-200 list-disc list-inside">
+                                ${sensor.advantages.map(adv => `<li>${adv}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="bg-amber-950/30 border border-amber-500/30 rounded-xl p-3.5">
+                            <h4 class="text-xs font-extrabold text-amber-400 mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation"></i> القيود والتحديات:
+                            </h4>
+                            <ul class="space-y-1.5 text-xs text-slate-200 list-disc list-inside">
+                                ${sensor.limitations.map(lim => `<li>${lim}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyan-950/30 border border-cyan-500/30 rounded-xl p-3.5 text-xs">
+                        <span class="font-extrabold text-cyan-400 block mb-1">
+                            <i class="fa-solid fa-lightbulb ml-1"></i> مثال تطبيقي واقعي:
+                        </span>
+                        <p class="text-slate-200">${sensor.realWorldExample}</p>
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // إغلاق النافذة عند النقر خارجها
+        document.getElementById('detail-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // 1. تصدير كملف PDF / طباعة
+        function exportPDF() {
+            showToast('جاري تجهيز نسخة PDF', 'اختر "Save as PDF" من نافذة الطباعة لحفظ الملف.', 'fa-file-pdf text-rose-400');
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        }
+
+        // 2. تصدير كملف Word (.doc) منظم باللغة العربية
+        function exportWord() {
+            try {
+                let wordHTML = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40' dir='rtl' lang='ar'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>المنظومة الوطنية للاستشعار عن بعد والتصوير الجوي</title>
+                    <style>
+                        body { font-family: 'Arial', 'Tahoma', sans-serif; direction: rtl; text-align: right; line-height: 1.6; color: #1e293b; }
+                        h1 { color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 8px; font-size: 20pt; }
+                        h2 { color: #0369a1; margin-top: 20px; font-size: 15pt; background-color: #f0f9ff; padding: 6px 10px; }
+                        h3 { color: #0f172a; margin-bottom: 4px; font-size: 13pt; }
+                        .badge-mil { color: #b91c1c; font-weight: bold; }
+                        .badge-civ { color: #047857; font-weight: bold; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 10pt; }
+                        th, td { border: 1px solid #94a3b8; padding: 8px; text-align: right; }
+                        th { background-color: #0f172a; color: #ffffff; }
+                        .card-box { border: 1px solid #cbd5e1; padding: 12px; margin-bottom: 14px; background-color: #f8fafc; }
+                    </style>
+                </head>
+                <body>
+                    <h1>المنظومة الوطنية للاستشعار عن بعد والتصوير الجوي</h1>
+                    <p><strong>مصفوفة الأنواع والمستشعرات والتطبيقات العسكرية والاستخباراتية والمدنية والتنموية</strong></p>
+                    <hr/>
+
+                    <h2>أولاً: جدول المقارنة المرجعي الشامل</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>المنظومة / المستشعر</th>
+                                <th>القطاع</th>
+                                <th>النطاق الطيفي</th>
+                                <th>آلية العمل</th>
+                                <th>الدقة المكانية</th>
+                                <th>أبرز المنصات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${sensorsData.map(s => `
+                                <tr>
+                                    <td><strong>${s.title}</strong><br/><span dir="ltr">${s.enTitle}</span></td>
+                                    <td>${s.domainLabel}</td>
+                                    <td>${s.spectrum}</td>
+                                    <td>${s.mechanismLabel}</td>
+                                    <td>${s.resolution}</td>
+                                    <td>${s.platforms}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <h2>ثانياً: التفصيل الفني والتطبيقي للمنظومات</h2>
+                    ${sensorsData.map(s => `
+                        <div class="card-box">
+                            <h3>${s.title} (<span dir="ltr">${s.enTitle}</span>)</h3>
+                            <p><span class="${s.domain === 'military' ? 'badge-mil' : 'badge-civ'}">[${s.domainLabel}]</span> | <strong>آلية العمل:</strong> ${s.mechanismLabel}</p>
+                            <p><strong>الوصف:</strong> ${s.summary}</p>
+                            <p><strong>النطاق الطيفي:</strong> ${s.spectrum} | <strong>الدقة المكانية:</strong> ${s.resolution}</p>
+                            <p><strong>أبرز المنصات:</strong> ${s.platforms}</p>
+                            <p><strong>التطبيقات الرئيسية:</strong></p>
+                            <ul>${s.applications.map(a => `<li>${a}</li>`).join('')}</ul>
+                            <p><strong>المزايا الفنية:</strong> ${s.advantages.join(' — ')}</p>
+                            <p><strong>القيود والتحديات:</strong> ${s.limitations.join(' — ')}</p>
+                        </div>
+                    `).join('')}
+                </body>
+                </html>
+                `;
+
+                const blob = new Blob(['\ufeff', wordHTML], { type: 'application/msword;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'المنظومة_الوطنية_للاستشعار_عن_بعد_والتصوير_الجوي.doc';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                showToast('تم تصدير ملف Word بنجاح', 'تم تحميل المستند بصيغة .doc على جهازك.', 'fa-file-word text-blue-400');
+            } catch (err) {
+                showToast('حدث خطأ أثناء التصدير', 'يرجى المحاولة مرة أخرى.', 'fa-circle-exclamation text-red-400');
+            }
+        }
+
+        // 3. حفظ الصفحة كملف HTML محلي باسم national_remote_sensing_infographic_matrix.html
+        function exportHTML() {
+            try {
+                const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'national_remote_sensing_infographic_matrix.html';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                showToast('تم حفظ الصفحة التفاعلية', 'تم تنزيل national_remote_sensing_infographic_matrix.html في مجلد التنزيلات.', 'fa-download text-amber-400');
+            } catch (err) {
+                showToast('تعذر حفظ الملف', 'يرجى المحاولة مرة أخرى.', 'fa-circle-exclamation text-red-400');
+            }
+        }
+
+        // التشغيل الأولي عند تحميل الصفحة
+        window.onload = function() {
+            renderCards();
+            renderTable();
+        };
+    </script>
+</body>
+</html>
